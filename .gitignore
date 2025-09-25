@@ -1,0 +1,26 @@
+# R artifacts
+.Rhistory
+.RData
+.Rproj.user
+*.Rproj
+
+# Temporary files
+/tmp/
+*.tmp
+*.temp
+
+# Output files
+*_coefficients.txt
+*_performance.txt
+*_plot.png
+
+# Docker artifacts
+*.log
+
+# IDE files
+.vscode/
+.idea/
+
+# System files
+.DS_Store
+Thumbs.db

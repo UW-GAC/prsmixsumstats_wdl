@@ -1,0 +1,7 @@
+{
+  "prsmixsumstats.sumstats_file": "sumstats.txt",
+  "prsmixsumstats.output_prefix": "elastic_net_results",
+  "prsmixsumstats.alpha": 0.5,
+  "prsmixsumstats.nfolds": 5,
+  "prsmixsumstats.docker_image": "prsmixsumstats:latest"
+}
