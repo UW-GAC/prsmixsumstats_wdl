@@ -28,7 +28,7 @@ task run_glmnet_sumstats {
 
     command <<<
         wget https://raw.githubusercontent.com/UW-GAC/prsmixsumstats_wdl/refs/heads/main/run_glmnet_sumstats.R
-        Rscript run_glmnet_sumstats.R --sumstats ${sumstats} --maxiter ${maxiter}
+        Rscript run_glmnet_sumstats.R --sumstats ~{sumstats} --maxiter ~{maxiter}
     >>>
 
     output {
@@ -61,13 +61,13 @@ task best_lambda_from_sim {
     command <<<
         wget https://raw.githubusercontent.com/UW-GAC/prsmixsumstats_wdl/refs/heads/main/best_lambda_from_sim.R
         Rscript best_lambda_from_sim.R \
-            --sumstats ${sumstats} \
-            --glmnet_fit ${glmnet_fit} \
-            --glmnet_auc ${glmnet_auc} \
-            --fit_params ${fit_params} \
-            --beta_names ${beta_names} 
-            --seed ${seed} \
-            --nsim ${nsim}
+            --sumstats ~{sumstats} \
+            --glmnet_fit ~{glmnet_fit} \
+            --glmnet_auc ~{glmnet_auc} \
+            --fit_params ~{fit_params} \
+            --beta_names ~{beta_names} 
+            --seed ~{seed} \
+            --nsim ~{nsim}
     >>>
 
     output {
