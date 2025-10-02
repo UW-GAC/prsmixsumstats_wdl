@@ -1,0 +1,4 @@
+{
+    "elastic_net_sumstats.sumstats": "gs://fc-4385a352-b8d3-4638-87bf-3eee81117146/example_sumstats.rds",
+    "elastic_net_sumstats.maxiter": 50
+}

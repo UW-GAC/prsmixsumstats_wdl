@@ -1,0 +1,8 @@
+version: 1.2
+workflows:
+   - name: elastic_net_sumstats
+     subclass: WDL
+     primaryDescriptorPath: /elastic_net_sumstats.wdl
+     testParameterFiles:
+       - /elastic_net_sumstats.json
+     
