@@ -65,7 +65,7 @@ task best_lambda_from_sim {
             --glmnet_fit ~{glmnet_fit} \
             --glmnet_auc ~{glmnet_auc} \
             --fit_params ~{fit_params} \
-            --beta_names ~{beta_names} 
+            --beta_names ~{beta_names} \
             --seed ~{seed} \
             --nsim ~{nsim}
     >>>
