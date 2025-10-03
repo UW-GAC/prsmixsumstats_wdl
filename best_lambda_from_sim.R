@@ -28,8 +28,15 @@ beta_names <- readRDS(args$beta_names)
 seed <- args$seed
 nsim <- args$nsim
 
-sumst <- total_stats$sumstats
-yvar <- total_stats$yvar
+if ("sumstats" %in% names(total_stats)) {
+  sumst <- total_stats$sumstats
+  yvar <- total_stats$yvar
+} else if (is(total_stats, "sumstats")) {
+  sumst <- total_stats
+  yvar <- 1
+} else {
+  stop("Input file must be a sumstats object or a list with a sumstats element")
+}
 rm(total_stats)
 
 set.seed(seed)
