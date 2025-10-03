@@ -17,11 +17,20 @@ args <- parser$parse_args()
 total_stats <- readRDS(args$sumstats)
 maxiter <- args$maxiter
 
-sumst <- total_stats$sumstats
-yvar <- total_stats$yvar
-ysum <- attr(total_stats$sumstats, "ysum")
-nobs <- attr(total_stats$sumstats, "nobs")
+if ("sumstats" %in% names(total_stats)) {
+  sumst <- total_stats$sumstats
+  yvar <- total_stats$yvar
+} else if (is(sumst, "sumstats")) {
+  sumst <- total_stats
+  yvar <- 1
+} else {
+  stop("Input file must be a sumstats object or a list with a sumstats element")
+}
 rm(total_stats)
+
+if (!attr(sumst, "centered")) {
+  stop("sumstats must be centered")
+}
 
 penalty_factor <- rep(1,ncol(sumst$xx))
 
@@ -61,6 +70,8 @@ for(i in 1:nalpha){
 }
 
 ## compute auc, loss, nbeta for each fit
+ysum <- attr(sumst, "ysum")
+nobs <- attr(sumst, "nobs")
 ncase <- ysum
 ncont <- nobs - ncase
 auc <- nbeta <- loss <- matrix(0, nalpha, nlambda)
