@@ -20,7 +20,7 @@ maxiter <- args$maxiter
 if ("sumstats" %in% names(total_stats)) {
   sumst <- total_stats$sumstats
   yvar <- total_stats$yvar
-} else if (is(sumst, "sumstats")) {
+} else if (is(total_stats, "sumstats")) {
   sumst <- total_stats
   yvar <- 1
 } else {
