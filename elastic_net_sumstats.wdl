@@ -18,6 +18,16 @@ workflow elastic_net_sumstats {
             fit_params = run_glmnet_sumstats.fit_params,
             beta_names = run_glmnet_sumstats.beta_names
     }
+
+    output {
+        File glmnet_fit = run_glmnet_sumstats.glmnet_fit
+        File glmnet_loss = run_glmnet_sumstats.glmnet_loss
+        File glmnet_auc = run_glmnet_sumstats.glmnet_auc
+        File glmnet_nbeta = run_glmnet_sumstats.glmnet_nbeta
+        File best_model = best_lambda_from_sim.best_model
+        File mean_loss_plot = best_lambda_from_sim.mean_loss_plot
+        File hist_beta_plot = best_lambda_from_sim.hist_beta_plot
+    }
 }
 
 task run_glmnet_sumstats {
