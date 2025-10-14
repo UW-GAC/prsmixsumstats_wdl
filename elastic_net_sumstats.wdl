@@ -14,19 +14,14 @@ workflow elastic_net_sumstats {
         input:
             sumstats = sumstats,
             glmnet_fit = run_glmnet_sumstats.glmnet_fit,
-            glmnet_auc = run_glmnet_sumstats.glmnet_auc,
-            fit_params = run_glmnet_sumstats.fit_params,
-            beta_names = run_glmnet_sumstats.beta_names
+            fit_params = run_glmnet_sumstats.fit_params
     }
 
     output {
         File glmnet_fit = run_glmnet_sumstats.glmnet_fit
-        File glmnet_loss = run_glmnet_sumstats.glmnet_loss
-        File glmnet_auc = run_glmnet_sumstats.glmnet_auc
-        File glmnet_nbeta = run_glmnet_sumstats.glmnet_nbeta
+        File glmnet_metrics = run_glmnet_sumstats.glmnet_metrics
         File best_model = best_lambda_from_sim.best_model
         File mean_loss_plot = best_lambda_from_sim.mean_loss_plot
-        File hist_beta_plot = best_lambda_from_sim.hist_beta_plot
     }
 }
 
@@ -43,10 +38,7 @@ task run_glmnet_sumstats {
 
     output {
         File glmnet_fit = "glmnet_sumstats_fit_grid.rds"
-        File glmnet_loss = "glmnet_sumstats_loss.rds"
-        File glmnet_auc = "glmnet_sumstats_auc.rds"
-        File glmnet_nbeta = "glmnet_sumstats_nbeta.rds"
-        File beta_names = "glmnet_sumstats_beta_names.rds"
+        File glmnet_metrics = "glmnet_sumstats_metrics.rds"
         File fit_params = "alpha_lambda.rds"
     }
 
@@ -61,9 +53,7 @@ task best_lambda_from_sim {
     input {
         File sumstats
         File glmnet_fit
-        File glmnet_auc
         File fit_params
-        File beta_names
         Int seed = 123
         Int nsim = 5
     }
@@ -73,9 +63,7 @@ task best_lambda_from_sim {
         Rscript best_lambda_from_sim.R \
             --sumstats ~{sumstats} \
             --glmnet_fit ~{glmnet_fit} \
-            --glmnet_auc ~{glmnet_auc} \
             --fit_params ~{fit_params} \
-            --beta_names ~{beta_names} \
             --seed ~{seed} \
             --nsim ~{nsim}
     >>>
@@ -83,7 +71,6 @@ task best_lambda_from_sim {
     output {
         File best_model = "best_model.rds"
         File mean_loss_plot = "mean_loss_grid.pdf"
-        File hist_beta_plot = "hist_beta_best.pdf"
     }
 
     runtime {
