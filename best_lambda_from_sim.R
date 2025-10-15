@@ -19,8 +19,8 @@ args <- parser$parse_args()
 combo_sumstats <- readRDS(args$sumstats)
 fit_grid <- readRDS(args$glmnet_fit)
 alpha_lambda <- readRDS(args$fit_params)
-alpha_grid <- alpha_lambda$alpha_grid
-lambda_frac <- alpha_lambda$lambda_frac
+alpha_grid <- alpha_lambda$alpha
+lambda_frac <- alpha_lambda$lambda
 seed <- args$seed
 nsim <- args$nsim
 
