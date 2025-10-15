@@ -37,7 +37,7 @@ penalty_factor <- rep(1,ncol(sumstats$xx))
 
 
 ## alpha weights abs(beta) and (1-alpha) weights beta^2
-alpha_grid <- (9:1)/10
+alpha_grid <- (10:0)/10
 lambda_frac <- exp(seq(from=log(1), to=log(.05), length=20))
 if (args$test) {
     alpha_grid <- seq(from=0.9, to=0.1, by= -0.3)
