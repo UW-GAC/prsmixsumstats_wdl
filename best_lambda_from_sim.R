@@ -70,7 +70,7 @@ mat_long$label[k1sd] <- "min+1sd"
 titl <- paste0("Loss across grid")
 p <- ggplot(mat_long, aes(x = lambda, y = alpha, color = label)) + 
   geom_point(aes(size = loss)) +
-  scale_color_manual(values = c("min" = "red", "min+1sd" = "blue", "above" = "black")) +
+  scale_color_manual(values = c("min" = "red", "min+1sd" = "#40E0D0", "above" = "black")) +
   labs(title = titl, x = "lambda_frac", y = "alpha")
 ggsave("mean_loss_grid.pdf", p, width=7, height=6)
 
