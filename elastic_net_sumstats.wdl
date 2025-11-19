@@ -14,6 +14,7 @@ workflow elastic_net_sumstats {
         input:
             sumstats = sumstats,
             glmnet_fit = run_glmnet_sumstats.glmnet_fit,
+            glmnet_metrics = run_glmnet_sumstats.glmnet_metrics,
             fit_params = run_glmnet_sumstats.fit_params
     }
 
