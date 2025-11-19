@@ -10,7 +10,7 @@ workflow elastic_net_sumstats {
             sumstats = sumstats
     }
 
-    call best_lambda_from_sim {
+    call select_best_model {
         input:
             sumstats = sumstats,
             glmnet_fit = run_glmnet_sumstats.glmnet_fit,
@@ -20,10 +20,11 @@ workflow elastic_net_sumstats {
     output {
         File glmnet_fit = run_glmnet_sumstats.glmnet_fit
         File glmnet_metrics = run_glmnet_sumstats.glmnet_metrics
-        File best_model = best_lambda_from_sim.best_model
-        File mean_loss_plot = best_lambda_from_sim.mean_loss_plot
+        File best_model = select_best_model.best_model
+        File mean_loss_plot = select_best_model.mean_loss_plot
     }
 }
+
 
 task run_glmnet_sumstats {
     input {
@@ -49,23 +50,22 @@ task run_glmnet_sumstats {
     }
 }
 
-task best_lambda_from_sim {
+
+task select_best_model {
     input {
         File sumstats
         File glmnet_fit
+        File glmnet_metrics
         File fit_params
-        Int seed = 123
-        Int nsim = 5
     }
 
     command <<<
-        wget https://raw.githubusercontent.com/UW-GAC/prsmixsumstats_wdl/refs/heads/main/best_lambda_from_sim.R
-        Rscript best_lambda_from_sim.R \
+        wget https://raw.githubusercontent.com/UW-GAC/prsmixsumstats_wdl/refs/heads/main/select_best_model.R
+        Rscript select_best_model.R \
             --sumstats ~{sumstats} \
             --glmnet_fit ~{glmnet_fit} \
-            --fit_params ~{fit_params} \
-            --seed ~{seed} \
-            --nsim ~{nsim}
+            --glmnet_metrics ~{glmnet_metrics} \
+            --fit_params ~{fit_params}
     >>>
 
     output {
