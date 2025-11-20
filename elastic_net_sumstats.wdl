@@ -34,7 +34,7 @@ task run_glmnet_sumstats {
     }
 
     command <<<
-        wget https://raw.githubusercontent.com/UW-GAC/prsmixsumstats_wdl/refs/heads/new_glmnet/run_glmnet_sumstats.R
+        wget https://raw.githubusercontent.com/UW-GAC/prsmixsumstats_wdl/refs/heads/main/run_glmnet_sumstats.R
         Rscript run_glmnet_sumstats.R --sumstats ~{sumstats} --maxiter ~{maxiter}
     >>>
 
@@ -61,7 +61,7 @@ task select_best_model {
     }
 
     command <<<
-        wget https://raw.githubusercontent.com/UW-GAC/prsmixsumstats_wdl/refs/heads/new_glmnet/select_best_model.R
+        wget https://raw.githubusercontent.com/UW-GAC/prsmixsumstats_wdl/refs/heads/main/select_best_model.R
         Rscript select_best_model.R \
             --sumstats ~{sumstats} \
             --glmnet_fit ~{glmnet_fit} \
