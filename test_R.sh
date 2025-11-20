@@ -7,7 +7,7 @@ R -q --vanilla --args \
 R -q --vanilla --args \
     --sumstats example_sumstats.rds \
     --glmnet_fit glmnet_sumstats_fit_grid.rds \
+    --metrics glmnet_sumstats_metrics.rds \
     --fit_params alpha_lambda.rds \
-    --nsim 2 \
-    < best_lambda_from_sim.R
+    < select_best_model.R
     

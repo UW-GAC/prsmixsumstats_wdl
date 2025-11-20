@@ -38,10 +38,10 @@ penalty_factor <- rep(1,ncol(sumstats$xx))
 
 ## alpha weights abs(beta) and (1-alpha) weights beta^2
 alpha_grid <- (10:1)/10
-lambda_frac <- exp(seq(from=log(1), to=log(.05), length=20))
+lambda_frac <- seq(from=1, to=.01, length=20)
 if (args$test) {
     alpha_grid <- seq(from=0.9, to=0.1, by= -0.3)
-    lambda_frac <- exp(seq(from=log(1), to=log(.05), length=4))     
+    lambda_frac <- seq(from=1, to=.01, length=10)     
 }
 
 nlambda <- length(lambda_frac)
@@ -50,37 +50,10 @@ nalpha <- length(alpha_grid)
 ## note 2-dimensional grid of fits. Each fit is a list
 ## and all fits arranged as matrix (of lists)
 
-fit_grid <- matrix(list(), nrow=nalpha, ncol=nlambda)
+fit_grid <-  glmnet_sumstats_grid(sumstats, alpha_grid=alpha_grid, lambda_frac=lambda_frac, penalty_factor=penalty_factor,  maxiter=maxiter)
 
-beta_zero <- rep(0, ncol(sumstats$xx))
-max_xy <- max(abs(sumstats$xy))
-
-time_begin <-  proc.time()
-for(i in 1:nalpha){
-  alpha <- alpha_grid[i]
-  lambda_max <- max_xy/alpha
-  
-  for(j in 1:nlambda){
-    lambda <- lambda_frac[j]*lambda_max
-    cat("================ alpha = ", alpha, ", lambda.frac = ", lambda_frac[j], ", lambda = ", lambda, " ==================\n")
-    
-    if(i==1 & j==1){
-      beta_init <- beta_zero
-    } else if (i > 1 & j == 1){
-      beta_init <- fit_grid[[i-1,j]]$beta   ## use warm start for next fit
-    } else {
-      beta_init <- fit_grid[[i,j-1]]$beta   ## use warm start for next fit
-    }
-    
-    ptm <- proc.time()
-    fit_grid[[i,j]] <-  glmnet_sumstats(sumstats, beta_init, alpha=alpha, lambda=lambda, penalty_factor,  maxiter=500, tol=1e-5, verbose=FALSE)
-    print(proc.time() - ptm)
-  }
-}
-print(proc.time() - time_begin)
-
-metrics_train <- metrics_sumstats(sumstats, fit_grid)
+metrics_obs <- metrics_sumstats(sumstats, fit_grid)
 
 saveRDS(fit_grid, file="glmnet_sumstats_fit_grid.rds")
-saveRDS(metrics_train, file="glmnet_sumstats_metrics.rds")
+saveRDS(metrics_obs, file="glmnet_sumstats_metrics.rds")
 saveRDS(list(alpha=alpha_grid, lambda=lambda_frac), file="alpha_lambda.rds")
