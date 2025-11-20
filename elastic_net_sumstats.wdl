@@ -65,7 +65,7 @@ task select_best_model {
         Rscript select_best_model.R \
             --sumstats ~{sumstats} \
             --glmnet_fit ~{glmnet_fit} \
-            --glmnet_metrics ~{glmnet_metrics} \
+            --metrics ~{glmnet_metrics} \
             --fit_params ~{fit_params}
     >>>
 
