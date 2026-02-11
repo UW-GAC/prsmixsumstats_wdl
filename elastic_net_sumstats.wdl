@@ -75,7 +75,7 @@ task select_best_model {
     }
 
     runtime {
-        docker: "uwgac/prsmixsumstats:0.1.0"
+        docker: "uwgac/prsmixsumstats:0.2.0"
         memory: "16 GB"
         cpu: 4
     }

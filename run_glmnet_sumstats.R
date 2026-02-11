@@ -20,10 +20,8 @@ maxiter <- args$maxiter
 
 if ("sumstats" %in% names(combo_sumstats)) {
   sumstats <- combo_sumstats$sumstats
-  sumstats$vary <- combo_sumstats$yvar
 } else if (is(combo_sumstats, "sumstats")) {
   sumstats <- combo_sumstats
-  sumstats$vary <- 1
 } else {
   stop("Input file must be a sumstats object or a list with a sumstats element")
 }

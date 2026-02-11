@@ -24,10 +24,10 @@ lambda_frac <- alpha_lambda$lambda
 
 if ("sumstats" %in% names(combo_sumstats)) {
   sumstats <- combo_sumstats$sumstats
-  sumstats$vary <- combo_sumstats$yvar
+  beta_multiplier <- combo_sumstats$beta_multiplier
 } else if (is(combo_sumstats, "sumstats")) {
   sumstats <- combo_sumstats
-  sumstats$vary <- 1
+  beta_multiplier <- 1
 } else {
   stop("Input file must be a sumstats object or a list with a sumstats element")
 }
@@ -35,9 +35,9 @@ rm(combo_sumstats)
 
 # Convert to long format for plotting
 
-colnames(metrics_obs$loss) <- lambda_frac
-rownames(metrics_obs$loss) <- alpha_grid
-mat_long <- melt(metrics_obs$loss)
+colnames(metrics_obs$loss_ssq) <- lambda_frac
+rownames(metrics_obs$loss_ssq) <- alpha_grid
+mat_long <- melt(metrics_obs$loss_ssq)
 
 names(mat_long) <- c("alpha", "lambda", "loss")
 mat_long$label <- rep("above", nrow(mat_long))
@@ -59,17 +59,24 @@ ggsave("mean_loss_grid.pdf", p, width=7, height=6)
 
 
 ## No. Beta's Selected
-beta_bic <- fit_grid[[metrics_obs$bic_min_index[1], metrics_obs$bic_min_index[2]]]$beta
-count_bic <- table(abs(beta_bic) > 1e-6)
 
-beta_min_loss <- fit_grid[[metrics_obs$loss_min_index[1], metrics_obs$loss_min_index[2]]]$beta
-count_loss <- table(abs(beta_min_loss) > 1e-6)
+min_loss <- fit_grid[[metrics_obs$loss_min_index[1], metrics_obs$loss_min_index[2]]]
+min_bic <- fit_grid[[metrics_obs$bic_min_index[1], metrics_obs$bic_min_index[2]]]
 
+count_bic <- table(abs(min_bic$beta) > 0)
+count_loss <- table(abs(min_loss$beta) > 0)
 print(rbind(count_bic, count_loss))
+
+
+## multiply by beta_multiplier to get back to original scale
+
+min_loss$beta <- min_loss$beta * beta_multiplier
+min_bic$beta <- min_bic$beta * beta_multiplier
+
 
 ## save best models
 best_model <- list(
-    min_loss = fit_grid[[metrics_obs$loss_min_index[1], metrics_obs$loss_min_index[2]]],
-    min_bic = fit_grid[[metrics_obs$bic_min_index[1], metrics_obs$bic_min_index[2]]]
+    min_loss = min_loss,
+    min_bic = min_bic
 )
 saveRDS(best_model, file="best_model.rds")
