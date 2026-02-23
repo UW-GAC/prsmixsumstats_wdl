@@ -69,7 +69,8 @@ print(rbind(count_bic, count_loss))
 
 
 ## multiply by beta_multiplier to get back to original scale
-
+stopifnot(all(names(min_loss$beta) == names(beta_multiplier)))
+stopifnot(all(names(min_bic$beta) == names(beta_multiplier)))
 min_loss$beta <- min_loss$beta * beta_multiplier
 min_bic$beta <- min_bic$beta * beta_multiplier
 
