@@ -5,17 +5,17 @@ library(prsmixsumstats)
 parser <- ArgumentParser(description = "run glmnet on summary statistics")
 
 # Add arguments
-parser$add_argument("--sumstats", type = "character", help = "Path to the summary statistics file", required = TRUE)
+parser$add_argument("--sumstats", type = "character", help = "Path to the summary statistics file (RDS)", required = TRUE)
 #parser$add_argument("--beta_init", type = "numeric", help = "beta_init", required = TRUE)
 #parser$add_argument("--alpha", type = "numeric", help = "alpha", required = TRUE)
 #parser$add_argument("--lambda", type = "numeric", help = "lambda", required = TRUE)
-#parser$add_argument("--penalty_factor", type = "numeric", help = "penalty_factor")
 parser$add_argument("--maxiter", type = "integer", help = "maxiter", default = 500)
 parser$add_argument("--test", action = "store_true", help = "test run with smaller grid for alpha and lambda")
 
 # Parse the arguments
 args <- parser$parse_args()
 combo_sumstats <- readRDS(args$sumstats)
+penalty_factor <- combo_sumstats$penalty_factor
 maxiter <- args$maxiter
 
 if ("sumstats" %in% names(combo_sumstats)) {
@@ -31,8 +31,11 @@ if (!attr(sumstats, "centered")) {
   stop("sumstats must be centered")
 }
 
-penalty_factor <- rep(1,ncol(sumstats$xx))
-
+if (is.null(penalty_factor)) {
+  warning("penalty_factor not found in input file. Assuming all 1s")
+} else {
+  stopifnot(all(names(penalty_factor) == colnames(sumstats$xx)))
+}
 
 ## alpha weights abs(beta) and (1-alpha) weights beta^2
 alpha_grid <- (10:1)/10
