@@ -3,11 +3,13 @@ version 1.0
 workflow elastic_net_sumstats {
     input {
         File sumstats
+        String trait_type
     }
 
     call run_glmnet_sumstats {
         input:
-            sumstats = sumstats
+            sumstats = sumstats,
+            trait_type = trait_type
     }
 
     call select_best_model {
@@ -30,12 +32,13 @@ workflow elastic_net_sumstats {
 task run_glmnet_sumstats {
     input {
         File sumstats
+        String trait_type
         Int maxiter = 500
     }
 
     command <<<
         wget https://raw.githubusercontent.com/UW-GAC/prsmixsumstats_wdl/refs/heads/main/run_glmnet_sumstats.R
-        Rscript run_glmnet_sumstats.R --sumstats ~{sumstats} --maxiter ~{maxiter}
+        Rscript run_glmnet_sumstats.R --sumstats ~{sumstats} --trait_type ~{trait_type} --maxiter ~{maxiter}
     >>>
 
     output {
@@ -45,7 +48,7 @@ task run_glmnet_sumstats {
     }
 
     runtime {
-        docker: "uwgac/prsmixsumstats:0.2.0"
+        docker: "uwgac/prsmixsumstats:0.2.3"
         memory: "16 GB"
         cpu: 4
     }
@@ -75,7 +78,7 @@ task select_best_model {
     }
 
     runtime {
-        docker: "uwgac/prsmixsumstats:0.2.0"
+        docker: "uwgac/prsmixsumstats:0.2.3"
         memory: "16 GB"
         cpu: 4
     }

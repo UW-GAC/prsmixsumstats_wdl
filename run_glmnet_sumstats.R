@@ -6,6 +6,7 @@ parser <- ArgumentParser(description = "run glmnet on summary statistics")
 
 # Add arguments
 parser$add_argument("--sumstats", type = "character", help = "Path to the summary statistics file (RDS)", required = TRUE)
+parser$add_argument("--trait_type", type = "character", help = "Trait type (binary or quant)", required = TRUE)
 #parser$add_argument("--beta_init", type = "numeric", help = "beta_init", required = TRUE)
 #parser$add_argument("--alpha", type = "numeric", help = "alpha", required = TRUE)
 #parser$add_argument("--lambda", type = "numeric", help = "lambda", required = TRUE)
@@ -17,6 +18,8 @@ args <- parser$parse_args()
 combo_sumstats <- readRDS(args$sumstats)
 penalty_factor <- combo_sumstats$penalty_factor
 maxiter <- args$maxiter
+trait_type <- args$trait_type
+stopifnot(trait_type %in% c("binary", "quant"))
 
 if ("sumstats" %in% names(combo_sumstats)) {
   sumstats <- combo_sumstats$sumstats
@@ -53,7 +56,7 @@ nalpha <- length(alpha_grid)
 
 fit_grid <-  glmnet_sumstats_grid(sumstats, alpha_grid=alpha_grid, lambda_frac=lambda_frac, penalty_factor=penalty_factor,  maxiter=maxiter)
 
-metrics_obs <- metrics_sumstats(sumstats, fit_grid)
+metrics_obs <- metrics_sumstats(sumstats, fit_grid, penalty_factor, trait_type)
 
 saveRDS(fit_grid, file="glmnet_sumstats_fit_grid.rds")
 saveRDS(metrics_obs, file="glmnet_sumstats_metrics.rds")
