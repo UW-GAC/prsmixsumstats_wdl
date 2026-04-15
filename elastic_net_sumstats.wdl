@@ -37,7 +37,7 @@ task run_glmnet_sumstats {
     }
 
     command <<<
-        wget https://raw.githubusercontent.com/UW-GAC/prsmixsumstats_wdl/refs/heads/main/run_glmnet_sumstats.R
+        wget https://raw.githubusercontent.com/UW-GAC/prsmixsumstats_wdl/refs/heads/trait_type/run_glmnet_sumstats.R
         Rscript run_glmnet_sumstats.R --sumstats ~{sumstats} --trait_type ~{trait_type} --maxiter ~{maxiter}
     >>>
 
