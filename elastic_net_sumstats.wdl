@@ -25,6 +25,7 @@ workflow elastic_net_sumstats {
         File glmnet_metrics = run_glmnet_sumstats.glmnet_metrics
         File best_model = select_best_model.best_model
         File mean_loss_plot = select_best_model.mean_loss_plot
+        File weight_file = select_best_model.weight_file
     }
 }
 
@@ -75,6 +76,7 @@ task select_best_model {
     output {
         File best_model = "best_model.rds"
         File mean_loss_plot = "mean_loss_grid.pdf"
+        File weight_file = "pgs_weights_min_bic.tsv"
     }
 
     runtime {
