@@ -3,6 +3,8 @@ library(argparse)
 library(prsmixsumstats)
 library(reshape2)
 library(ggplot2)
+library(dplyr)
+library(stringr)
 
 # Create a parser object
 parser <- ArgumentParser(description = "choose best model from grid of alpha and lambda")
@@ -81,3 +83,11 @@ best_model <- list(
     min_bic = min_bic
 )
 saveRDS(best_model, file="best_model.rds")
+
+## write weights for PGS only, not covariates
+weights <- best_model$min_bic$beta
+weights <- weights[str_detect(names(weights), "^PGS")]
+weight_tbl <- tibble(score=names(weights), weight=weights) %>%
+    filter(weight != 0) %>%
+    mutate(score = str_replace(score, "_SUM$", ""))
+write_tsv(weight_tbl, "pgs_weights_min_bic.tsv")
