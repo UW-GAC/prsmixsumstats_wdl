@@ -5,6 +5,7 @@ library(reshape2)
 library(ggplot2)
 library(dplyr)
 library(stringr)
+library(readr)
 
 # Create a parser object
 parser <- ArgumentParser(description = "choose best model from grid of alpha and lambda")
