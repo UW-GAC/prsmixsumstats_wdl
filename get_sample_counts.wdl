@@ -3,35 +3,33 @@ version 1.0
 workflow get_sample_counts {
     input {
         File sumstat_file
-        #String analysis
         String trait_type
-
         Int mem_gb
         Int disk_size
     }
 
-    if (trait_type=="binary") {
+    if (trait_type == "binary") {
         call parse_file_1 {
             input:
-                file_input=sumstat_file
-                mem_gb=mem_gb
-                disk_size=disk_size
+                file_input = sumstat_file,
+                mem_gb = mem_gb,
+                disk_size = disk_size,
         }
     }
 
-    if (trait_type=="quant") {
+    if (trait_type == "quant") {
         call parse_file_2 {
             input:
-                file_input=sumstat_file
-                mem_gb=mem_gb
-                disk_size=disk_size
+                file_input = sumstat_file,
+                mem_gb = mem_gb,
+                disk_size = disk_size,
         }
     }
     
     output {
-        Int? n_total=select_first(parse_file_1.n_total, parse_file_2.n_total)
-        Int? n_cases=parse_file_1.n_cases
-        Int? n_controls=parse_file_1.n_controls
+        Int? n_total = select_first([parse_file_1.n_total, parse_file_2.n_total])
+        Int? n_cases = parse_file_1.n_cases
+        Int? n_controls = parse_file_1.n_controls
     }
 
 }
@@ -41,6 +39,7 @@ task parse_file_1 {
     input {
       File file_input
       Int mem_gb
+      Int disk_size
     }
     command <<<
         R << RSCRIPT
@@ -73,6 +72,7 @@ task parse_file_2 {
     input{
         File file_input
         Int mem_gb
+        Int disk_size
     }
     command <<<
         R << RSCRIPT
