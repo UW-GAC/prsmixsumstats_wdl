@@ -1,4 +1,4 @@
-version 1.0
+version 1.0 
 
 workflow get_sample_counts {
     input {
