@@ -7,5 +7,5 @@ workflows:
        - /elastic_net_sumstats.json
    - name: get_sample_counts
      subclass: WDL
-     primarDescriptorPath: /get_sample_counts.wdl
+     primaryDescriptorPath: /get_sample_counts.wdl
      
