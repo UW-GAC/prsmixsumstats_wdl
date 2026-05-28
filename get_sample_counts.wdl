@@ -44,7 +44,7 @@ task parse_file_1 {
     command <<<
         R << RSCRIPT
             library(tidyverse)
-            this_rds_file <- readRDS(file_input)
+            this_rds_file <- readRDS("~{file_input}")
             this_nobs <- attr(this_rds_file, "nobs")
             this_cases <- attr(this_rds_file, "ysum")
             this_controls <- this_nobs-this_ysum
@@ -77,7 +77,7 @@ task parse_file_2 {
     command <<<
         R << RSCRIPT
             library(tidyverse)
-            this_rds_file <- readRDS(file_input)
+            this_rds_file <- readRDS("~{file_input}")
             this_nobs <- attr(this_rds_file, "nobs")
 
             cat(this_nobs, file="n_total.txt")
