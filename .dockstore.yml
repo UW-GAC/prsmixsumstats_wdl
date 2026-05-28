@@ -6,6 +6,6 @@ workflows:
      testParameterFiles:
        - /elastic_net_sumstats.json
    - name: get_sample_counts
-      subclass: WDL
-      primaryDescriptorPath: /get_sample_counts.wdl
+     subclass: WDL
+     primarDescriptorPath: /get_sample_counts.wdl
      
