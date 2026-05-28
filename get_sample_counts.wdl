@@ -47,7 +47,7 @@ task parse_file_1 {
             this_rds_file <- readRDS("~{file_input}")
             this_nobs <- attr(this_rds_file, "nobs")
             this_cases <- attr(this_rds_file, "ysum")
-            this_controls <- this_nobs-this_ysum
+            this_controls <- this_nobs-this_cases
 
             cat(this_nobs, file="n_total.txt")
             cat(this_cases, file="n_cases.txt")
