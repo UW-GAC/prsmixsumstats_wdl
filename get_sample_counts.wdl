@@ -89,6 +89,6 @@ task parse_file_2 {
     runtime {
         docker: "rocker/tidyverse:4"
         disks: "local-disk ~{disk_size} SSD"
-        memory: "~{mem_gb} GB"  
+        memory: "~{mem_gb} GB"
     }
 }
