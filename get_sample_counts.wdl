@@ -30,6 +30,8 @@ workflow get_sample_counts {
         Int? n_total = select_first([parse_file_1.n_total, parse_file_2.n_total])
         Int? n_cases = parse_file_1.n_cases
         Int? n_controls = parse_file_1.n_controls
+        Int? n_missing = select_first([parse_file_1.n_missing, parse_file_2.n_missing])
+        Int? n_subj = select_first([parse_file_1.n_subj, parse_file_2.n_subj])
     }
 
 }
@@ -48,10 +50,14 @@ task parse_file_1 {
             this_nobs <- attr(this_rds_file, "nobs")
             this_cases <- attr(this_rds_file, "ysum")
             this_controls <- this_nobs-this_cases
+            this_missing <- attr(this_rds_file, "nmiss")
+            this_subj <- attr(this_rds_file, "nsubj")
 
             cat(this_nobs, file="n_total.txt")
             cat(this_cases, file="n_cases.txt")
             cat(this_controls, file="n_controls.txt")
+            cat(this_missing, file="n_missing.txt")
+            cat(this_subj, file="n_subj.txt")
             
         RSCRIPT
     >>>
@@ -59,6 +65,8 @@ task parse_file_1 {
         Int n_total = read_int("n_total.txt")
         Int n_cases = read_int("n_cases.txt")
         Int n_controls = read_int("n_controls.txt")
+        Int n_missing = read_int("n_missing.txt")
+        Int n_subj = read_int("n_subj.txt")
         
     }
     runtime {
@@ -79,12 +87,19 @@ task parse_file_2 {
             library(tidyverse)
             this_rds_file <- readRDS("~{file_input}")
             this_nobs <- attr(this_rds_file, "nobs")
+            this_missing <- attr(this_rds_file, "nmiss")
+            this_subj <- attr(this_rds_file, "nsubj")
 
             cat(this_nobs, file="n_total.txt")
+            cat(this_missing, file="n_missing.txt")
+            cat(this_subj, file="n_subj.txt")
+
         RSCRIPT
     >>>
     output {
         Int n_total = read_int("n_total.txt")
+        Int n_missing = read_int("n_missing.txt")
+        Int n_subj = read_int("n_subj.txt")
     }
     runtime {
         docker: "rocker/tidyverse:4"
