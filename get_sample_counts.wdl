@@ -95,7 +95,7 @@ task parse_file_2 {
             cat(this_nobs, file="n_total.txt")
             cat(this_missing, file="n_missing.txt")
             cat(this_subj, file="n_subj.txt")
-            cat(this_subj, file="ysum.txt")
+            cat(this_ysum, file="ysum.txt")
 
         RSCRIPT
     >>>
