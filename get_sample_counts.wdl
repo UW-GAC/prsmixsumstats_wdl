@@ -139,10 +139,9 @@ task parse_file_3 {
                 name = names(x_f),
                 value = unname(x_f)
             )
-
             
             prefix <- basename("~{file_input}")
-            cat(df_covars, file=paste0(prefix, "_colsum.tsv"))
+            write.table(df_covars, paste0(prefix, "_colsum.tsv"), sep = "\t")
 
         RSCRIPT
     >>>
