@@ -139,5 +139,10 @@ task parse_file_3 {
     output {
         File colsum_file = "colsum.txt"
     }
+    runtime {
+        docker: "rocker/tidyverse:4"
+        disks: "local-disk ~{disk_size} SSD"
+        memory: "~{mem_gb} GB"
+    }
 
 }
