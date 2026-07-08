@@ -4,7 +4,6 @@ workflow get_sample_counts {
     input {
         File sumstat_file
         String trait_type
-        String cohort
         Int mem_gb
         Int disk_size
     }
@@ -30,7 +29,6 @@ workflow get_sample_counts {
     call parse_file_3 {
         input:
             file_input = sumstat_file,
-            prefix = cohort,
             mem_gb = mem_gb,
             disk_size = disk_size,
     }
@@ -78,7 +76,7 @@ task parse_file_1 {
         Int n_controls = read_int("n_controls.txt")
         Int n_missing = read_int("n_missing.txt")
         Int n_subj = read_int("n_subj.txt")
-        
+
     }
     runtime {
         docker: "rocker/tidyverse:4"
@@ -125,7 +123,6 @@ task parse_file_2 {
 task parse_file_3 {
     input{
         File file_input
-        File prefix
         Int mem_gb
         Int disk_size
     }
@@ -142,13 +139,13 @@ task parse_file_3 {
                 name = names(x_f),
                 value = unname(x_f)
             )
-            colsum_file <- paste0("~{prefix}", "_colsum.tsv)
-            write.table(df_covars, colsum_file, sep = "\t", row.names = FALSE)
+
+            write.table(df_covars, file = "colsum_file.tsv", sep = "\t", row.names = FALSE)
 
         RSCRIPT
     >>>
     output {
-        File colsum_file = "~{prefix}_colsum.tsv"
+        File colsum_file = "colsum_file.tsv"
     }
     runtime {
         docker: "rocker/tidyverse:4"
