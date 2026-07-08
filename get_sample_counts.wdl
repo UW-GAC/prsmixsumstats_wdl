@@ -132,7 +132,17 @@ task parse_file_3 {
             this_rds_file <- readRDS("~{file_input}")
             this_colsum <- attr(this_rds_file, "colsum")
 
-            cat(this_colsum, file="colsum.txt")
+            x <- this_colsum
+            x_f <- x[!grepl("PGS|PC", names(x))]
+
+            df_covars <- data.frame(
+                name = names(x_f),
+                value = unname(x_f)
+            )
+
+            
+            prefix <- basename("~{file_input}")
+            cat(df_covars, file=paste0(prefix, "_colsum.tsv"))
 
         RSCRIPT
     >>>
