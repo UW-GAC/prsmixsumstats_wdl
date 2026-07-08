@@ -25,6 +25,13 @@ workflow get_sample_counts {
                 disk_size = disk_size,
         }
     }
+
+    call parse_file_3 {
+        input:
+            file_input = sumstat_file,
+            mem_gb = mem_gb,
+            disk_size = disk_size,
+    }
     
     output {
         Int? n_total = select_first([parse_file_1.n_total, parse_file_2.n_total])
@@ -33,6 +40,7 @@ workflow get_sample_counts {
         Int? n_missing = select_first([parse_file_1.n_missing, parse_file_2.n_missing])
         Int? n_subj = select_first([parse_file_1.n_subj, parse_file_2.n_subj])
         Float? ysum = parse_file_2.ysum
+        File colsum_file = parse_file_3.colsum_file
     }
 
 }
@@ -110,4 +118,26 @@ task parse_file_2 {
         disks: "local-disk ~{disk_size} SSD"
         memory: "~{mem_gb} GB"
     }
+}
+
+task parse_file_3 {
+    input{
+        File file_input
+        Int mem_gb
+        Int disk_size
+    }
+    command <<<
+        R << RSCRIPT
+            library(tidyverse)
+            this_rds_file <- readRDS("~{file_input}")
+            this_colsum <- attr(this_rds_file, "colsum")
+
+            cat(this_colsum, file="colsum.txt")
+
+        RSCRIPT
+    >>>
+    output {
+        File colsum_file = "colsum.txt"
+    }
+
 }
