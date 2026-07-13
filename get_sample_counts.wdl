@@ -144,7 +144,7 @@ task parse_file_3 {
                 t()
 
 
-            write.table(df_covars, file = "colsum_file.tsv", sep = "\t", row.names = FALSE, col.names = TRUE)
+            write.table(df_covars, file = "colsum_file.tsv", sep = "\t", row.names = TRUE, col.names = TRUE)
 
         RSCRIPT
     >>>
