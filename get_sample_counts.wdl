@@ -131,14 +131,18 @@ task parse_file_3 {
             library(tidyverse)
             this_rds_file <- readRDS("~{file_input}")
             this_colsum <- attr(this_rds_file, "colsum")
+            this_nobs <- attr(this_rds_file, "nobs")
 
             x <- this_colsum
             x_f <- x[!grepl("PGS|PC", names(x))]
 
+            avg_covars <- x_f/this_nobs
+
             df_covars <- data.frame(
-                name = names(x_f),
-                value = unname(x_f)
-            )
+                covar_value = unname(x_f),
+                covar_avg = avg_covars) %>%
+                t()
+
 
             write.table(df_covars, file = "colsum_file.tsv", sep = "\t", row.names = FALSE, col.names = TRUE)
 
