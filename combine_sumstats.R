@@ -150,7 +150,7 @@ if (trait_type == "quant") {
   avg_y <- attr(sumst_comb$sumstats, "ysum") / nobs
   cat("y_avg:", avg_y, "\n", file=log, append=TRUE)
 } else {
-  ncase <- nobs - attr(sumst_comb$sumstats, "ysum")
+  ncase <- attr(sumst_comb$sumstats, "ysum")
   nctrl <- nobs - ncase
   cat("n_case:", ncase, "\n", file=log, append=TRUE)
   cat("n_ctrl:", nctrl, "\n", file=log, append=TRUE)
