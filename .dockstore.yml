@@ -5,4 +5,7 @@ workflows:
      primaryDescriptorPath: /elastic_net_sumstats.wdl
      testParameterFiles:
        - /elastic_net_sumstats.json
+   - name: combine_sumstats
+     subclass: WDL
+     primaryDescriptorPath: /combine_sumstats.wdl
      
