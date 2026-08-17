@@ -144,7 +144,7 @@ cat(tail(colnames(sumst_comb$sumstats$xx)), "\n", file=log, append=TRUE)
 saveRDS(sumst_comb, "combined_sumstats.rds")
 
 nobs <- attr(sumst_comb$sumstats, "nobs")
-writeLines(nobs, "nobs.txt")
+writeLines(as.character(nobs), "nobs.txt")
 
 if (trait_type == "quant") {
   avg_y <- attr(sumst_comb$sumstats, "ysum") / nobs
