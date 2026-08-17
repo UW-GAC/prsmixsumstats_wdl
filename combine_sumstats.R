@@ -55,7 +55,7 @@ files <- this %>%
   select(sumstat_file)
 for (f in unique(unlist(files))) {
   local_file <- basename(f)
-  suppressWarnings(avcopy(f, local_file))
+  suppressWarnings(gsutil_cp(f, local_file))
 }
 
 sumst_list <- list()
