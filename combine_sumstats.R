@@ -138,7 +138,7 @@ sumst_comb$penalty_factor <- penalty_factor
 cat(paste("number of incomplete PRS:", length(sumst_comb$incomplete_cols)), "\n", file=log, append=TRUE)
 cat(paste("number of PRS with no variation:", length(sumst_comb$near_zero_var)), "\n", file=log, append=TRUE)
 
-cat(str(sumst_comb$sumstats), "\n", file=log, append=TRUE)
+capture.output(str(sumst_comb$sumstats), file=log, append=TRUE)
 cat(head(colnames(sumst_comb$sumstats$xx)), "\n", file=log, append=TRUE)
 cat(tail(colnames(sumst_comb$sumstats$xx)), "\n", file=log, append=TRUE)
 saveRDS(sumst_comb, "combined_sumstats.rds")

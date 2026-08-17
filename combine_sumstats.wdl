@@ -24,7 +24,7 @@ workflow combine_sumstats {
 
     output {
         File combined_sumstats = combine.sumstats
-        File log = combine.log
+        File combine_log = combine.log
         Int nobs = combine.nobs
     }
 }
