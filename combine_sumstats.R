@@ -1,23 +1,23 @@
 library(AnVIL)
 library(readr)
-library(argparse)
+library(argparser)
 remotes::install_github("UW-GAC/prsmixsumstats")
 library(prsmixsumstats)
 
 # Create a parser object
-parser <- ArgumentParser(description = "combine sumstats")
+parser <- arg_parser("combine sumstats")
 
 # Add arguments
-parser$add_argument("--trait", type = "character", help = "trait", required = TRUE)
-parser$add_argument("--trait_type", type = "character", help = "trait type (binary or quant)", required = TRUE)
-parser$add_argument("--cluster", type = "character", help = "cluster", required = TRUE)
-parser$add_argument("--adjusted", type = "character", help = "adjusted (TRUE or FALSE)", required = TRUE)
-parser$add_argument("--drop_scores_file", type = "character", help = "file with scores to drop", required = TRUE)
-parser$add_argument("--workspace", type = "character", help = "workspace name to fetch table of sumstats", required = TRUE)
-parser$add_argument("--namespace", type = "character", help = "namespace to fetch table of sumstats", required = TRUE)
+parser <- add_argument(parser, "--trait", type = "character", help = "trait")
+parser <- add_argument(parser, "--trait_type", type = "character", help = "trait type (binary or quant)")
+parser <- add_argument(parser, "--cluster", type = "character", help = "cluster")
+parser <- add_argument(parser, "--adjusted", type = "character", help = "adjusted (TRUE or FALSE)")
+parser <- add_argument(parser, "--drop_scores_file", type = "character", help = "file with scores to drop")
+parser <- add_argument(parser, "--workspace", type = "character", help = "workspace name to fetch table of sumstats")
+parser <- add_argument(parser, "--namespace", type = "character", help = "namespace to fetch table of sumstats")
 
 # Parse the arguments
-args <- parser$parse_args()
+args <- parse_args(parser)
 
 this_trait <- args$trait
 trait_type <- args$trait_type
