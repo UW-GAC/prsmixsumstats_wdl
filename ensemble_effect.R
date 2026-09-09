@@ -27,10 +27,14 @@ rm(combo_sumstats)
 min_bic <- fit_grid[[metrics_obs$bic_min_index[1], metrics_obs$bic_min_index[2]]]
 beta_bic <- min_bic$beta
 is_pgs <- grepl("^PGS", names(beta_bic))
+
+if (sum(beta_bic[is_pgs]) > 0) {
 fit_effects <- pgs_ensemble_sumstats(sumstats, beta = beta_bic,  
                                      trait_type = "binary", 
                                      index_pgs = which(is_pgs), 
                                      index_covar = which(!is_pgs))
-
+} else {
+  fit_effects <- NULL
+}
 saveRDS(fit_effects, "pgs_effects_min_bic.rds")
 
