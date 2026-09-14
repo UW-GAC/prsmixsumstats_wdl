@@ -42,7 +42,7 @@ task combine {
     }
 
     command <<<
-        wget wget https://raw.githubusercontent.com/UW-GAC/prsmixsumstats_wdl/refs/heads/combine_sumstats/combine_sumstats.R
+        wget https://raw.githubusercontent.com/UW-GAC/prsmixsumstats_wdl/refs/heads/main/combine_sumstats.R
         Rscript combine_sumstats.R --trait ~{trait} --trait_type ~{trait_type} --cluster ~{cluster} --adjusted ~{adjusted} \
             --drop_scores_file ~{drop_scores_file} --workspace ~{workspace} --namespace ~{namespace}
     >>>
