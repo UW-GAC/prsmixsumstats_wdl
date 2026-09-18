@@ -34,6 +34,7 @@ workflow elastic_net_sumstats {
         File mean_loss_plot = select_best_model.mean_loss_plot
         File weight_file = select_best_model.weight_file
         File ensemble_effect = estimate_effect.effect_file
+        File marginal_file = estimate_effect.marginal_file
     }
 }
 
@@ -112,6 +113,7 @@ task estimate_effect {
 
     output {
         File effect_file = "pgs_effects_min_bic.rds"
+        File marginal_file = "pgs_marginal_min_bic.rds"
     }
 
     runtime {

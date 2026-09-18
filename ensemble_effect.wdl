@@ -18,5 +18,6 @@ workflow ensemble_effect {
 
     output {
         File effect_file = estimate_effect.effect_file
+        File marginal_file = estimate_effect.marginal_file
     }
 }
