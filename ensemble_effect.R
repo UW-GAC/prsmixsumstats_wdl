@@ -17,8 +17,10 @@ metrics_obs <- readRDS(args$metrics)
 
 if ("sumstats" %in% names(combo_sumstats)) {
   sumstats <- combo_sumstats$sumstats
+  beta_multiplier <- combo_sumstats$beta_multiplier
 } else if (is(combo_sumstats, "sumstats")) {
   sumstats <- combo_sumstats
+  beta_multiplier <- rep(1, length(ncol(sumstats$xx)))
 } else {
   stop("Input file must be a sumstats object or a list with a sumstats element")
 }
@@ -29,12 +31,14 @@ beta_bic <- min_bic$beta
 is_pgs <- grepl("^PGS", names(beta_bic))
 
 if (sum(beta_bic[is_pgs]) > 0) {
-fit_effects <- pgs_ensemble_sumstats(sumstats, beta = beta_bic,  
-                                     trait_type = "binary", 
-                                     index_pgs = which(is_pgs), 
-                                     index_covar = which(!is_pgs))
+  fit_effects <- pgs_ensemble_sumstats(sumstats, beta = beta_bic,  
+    beta_multiplier = beta_multiplier, trait_type = "binary")
+  fit_marginal <- pgs_marginal_sumstats(sumstats, beta = beta_bic,  
+    trait_type = "binary")
 } else {
   fit_effects <- NULL
+  fit_marginal <- NULL
 }
 saveRDS(fit_effects, "pgs_effects_min_bic.rds")
+saveRDS(fit_marginal, "pgs_marginal_min_bic.rds")
 
