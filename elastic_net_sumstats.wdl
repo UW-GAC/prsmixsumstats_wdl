@@ -23,6 +23,7 @@ workflow elastic_net_sumstats {
     call estimate_effect {
         input:
             sumstats = sumstats,
+            trait_type = trait_type,
             glmnet_fit = run_glmnet_sumstats.glmnet_fit,
             glmnet_metrics = run_glmnet_sumstats.glmnet_metrics
     }
@@ -99,6 +100,7 @@ task select_best_model {
 task estimate_effect {
     input {
         File sumstats
+        String trait_type
         File glmnet_fit
         File glmnet_metrics
     }
@@ -107,6 +109,7 @@ task estimate_effect {
         wget https://raw.githubusercontent.com/UW-GAC/prsmixsumstats_wdl/refs/heads/effect/ensemble_effect.R
         Rscript ensemble_effect.R \
             --sumstats ~{sumstats} \
+            --trait_type ~{trait_type} \
             --glmnet_fit ~{glmnet_fit} \
             --metrics ~{glmnet_metrics}
     >>>
