@@ -31,10 +31,14 @@ beta_bic <- min_bic$beta
 is_pgs <- grepl("^PGS", names(beta_bic))
 
 if (sum(beta_bic[is_pgs]) > 0) {
-  fit_effects <- pgs_ensemble_sumstats(sumstats, beta = beta_bic,  
-    beta_multiplier = beta_multiplier, trait_type = "binary")
-  fit_marginal <- pgs_marginal_sumstats(sumstats, beta = beta_bic,  
-    trait_type = "binary")
+  fit_effects <- tryCatch({
+    pgs_ensemble_sumstats(sumstats, beta = beta_bic,  
+      beta_multiplier = beta_multiplier, trait_type = "binary")
+    }, error = function(e) {print(e); return(NULL)})
+  fit_marginal <- tryCatch({
+    pgs_marginal_sumstats(sumstats, beta = beta_bic,  
+      trait_type = "binary")
+  }, error = function(e) {print(e); return(NULL)})
 } else {
   fit_effects <- NULL
   fit_marginal <- NULL
