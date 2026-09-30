@@ -142,7 +142,7 @@ task parse_file_covars {
 
             x <- this_colsum
             x_f <- x[!grepl("PGS|PC", names(x))]
-            x_f <- x[!grepl("NAMED_ALLELE_DOSAGE_SUM", names(x))]
+            x_f <- x_f[!grepl("NAMED_ALLELE_DOSAGE_SUM", names(x_f))]
 
             avg_covars <- x_f/this_nobs
 
