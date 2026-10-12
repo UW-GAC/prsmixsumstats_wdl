@@ -32,7 +32,7 @@ min_bic <- fit_grid[[metrics_obs$bic_min_index[1], metrics_obs$bic_min_index[2]]
 beta_bic <- min_bic$beta
 is_pgs <- grepl("^PGS", names(beta_bic))
 
-if (sum(beta_bic[is_pgs]) > 0) {
+if (sum(abs(beta_bic)[is_pgs]) > 0) {
   # allow for different sumstats and evaluation
   if (!identical(colnames(sumstats$xx), names(beta_bic))) {
     beta_bic <- beta_bic[colnames(sumstats$xx)]
