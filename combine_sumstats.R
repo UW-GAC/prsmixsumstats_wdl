@@ -96,6 +96,18 @@ for (i in 1:nrow(this)) {
   if ("diastolic" %in% colnames(sumst$xx)) {
     sumst <- rename_col_sumstats(sumst, "diastolic", "DBP")
   }
+  if ("adj.DBP" %in% colnames(sumst$xx)) {
+    sumst <- rename_col_sumstats(sumst, "adj.DBP", "DBP")
+  }
+  if ("adj.SBP" %in% colnames(sumst$xx)) {
+    sumst <- rename_col_sumstats(sumst, "adj.SBP", "SBP")
+  }
+  if ("ldl" %in% colnames(sumst$xx)) {
+    sumst <- rename_col_sumstats(sumst, "ldl", "LDL")
+  }
+  if ("hdl" %in% colnames(sumst$xx)) {
+    sumst <- rename_col_sumstats(sumst, "hdl", "HDL")
+  }
   if (!adjusted) {
     # check that scores end with "_SUM"
     for (p in pgs) {
