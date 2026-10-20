@@ -102,6 +102,9 @@ for (i in 1:nrow(this)) {
   if ("adj.SBP" %in% colnames(sumst$xx)) {
     sumst <- rename_col_sumstats(sumst, "adj.SBP", "SBP")
   }
+  if ("adj.LDL" %in% colnames(sumst$xx)) {
+    sumst <- rename_col_sumstats(sumst, "adj.LDL", "LDL")
+  }
   if ("ldl" %in% colnames(sumst$xx)) {
     sumst <- rename_col_sumstats(sumst, "ldl", "LDL")
   }
