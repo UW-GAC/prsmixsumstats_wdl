@@ -108,6 +108,12 @@ for (i in 1:nrow(this)) {
   if ("hdl" %in% colnames(sumst$xx)) {
     sumst <- rename_col_sumstats(sumst, "hdl", "HDL")
   }
+  if ("DBP_BMI_median" %in% colnames(sumst$xx)) {
+    sumst <- rename_col_sumstats(sumst, "DBP_BMI_median", "BMI")
+  }
+  if ("SBP_BMI_median" %in% colnames(sumst$xx)) {
+    sumst <- rename_col_sumstats(sumst, "SBP_BMI_median", "BMI")
+  }
   if (!adjusted) {
     # check that scores end with "_SUM"
     for (p in pgs) {
