@@ -27,6 +27,8 @@ jobs:
       matrix:
         wdl-file: [
             ./elastic_net_sumstats.wdl,
+	    ./combine_sumstats.wdl,
+	    ./ensemble_effect.wdl,
         ]
 
     name: "Run womtool: ${{ matrix.wdl-file }}"
