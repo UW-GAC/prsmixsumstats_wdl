@@ -8,4 +8,7 @@ workflows:
    - name: combine_sumstats
      subclass: WDL
      primaryDescriptorPath: /combine_sumstats.wdl
+   - name: ensemble_effect
+     subclass: WDL
+     primaryDescriptorPath: /ensemble_effect.wdl
      
