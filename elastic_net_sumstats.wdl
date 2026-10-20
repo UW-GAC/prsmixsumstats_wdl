@@ -106,7 +106,7 @@ task estimate_effect {
     }
 
     command <<<
-        wget https://raw.githubusercontent.com/UW-GAC/prsmixsumstats_wdl/refs/heads/effect/ensemble_effect.R
+        wget https://raw.githubusercontent.com/UW-GAC/prsmixsumstats_wdl/refs/heads/main/ensemble_effect.R
         Rscript ensemble_effect.R \
             --sumstats ~{sumstats} \
             --trait_type ~{trait_type} \
