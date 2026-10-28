@@ -35,6 +35,8 @@ task tar_files {
         done
 
         tar --create --file=weight_files.tar weight_files
+
+        tar --list --file=weight_files.tar
     >>>
 
     output {
