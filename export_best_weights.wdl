@@ -25,16 +25,12 @@ task tar_files {
     }
 
     command <<<
-        ls
-        echo "files: ~{sep=' ' files}"
-        echo "filenames: ~{sep=' ' filenames}"
-
         file_array=(~{sep=' ' files})
         filename_array=(~{sep=' ' filenames})
 
         mkdir weight_files
         for index in ${!file_array[*]}; do
-#            echo "${file_array[$index]} is in ${filename_array[$index]}"
+            echo "${file_array[$index]} -> ${filename_array[$index]}.tsv"
             cp "${file_array[$index]}" "weight_files/${filename_array[$index]}.tsv"
         done
 
