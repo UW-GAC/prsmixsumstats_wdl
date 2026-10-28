@@ -10,7 +10,8 @@ workflow export_best_weights {
     call tar_files {
         input:
             files = weight_files,
-            file_prefixes = output_weight_file_prefixes
+            file_prefixes = output_weight_file_prefixes,
+            out_tar_file_prefix = out_tar_file_prefix
     }
 
     output {
