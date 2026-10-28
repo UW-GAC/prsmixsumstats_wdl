@@ -28,6 +28,9 @@ task tar_files {
         file_array=(~{sep=' ' files})
         filename_array=(~{sep=' ' filenames})
 
+        echo $file_array
+        echo $filename_array
+
         mkdir weight_files
         for index in ${!file_array[*]}; do
             echo "${file_array[$index]} -> ${filename_array[$index]}.tsv"
