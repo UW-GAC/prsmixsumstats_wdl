@@ -26,8 +26,8 @@ task copy_files {
 
     command <<<
         ls
-        echo $files
-        echo $filenames
+        echo "files: $files"
+        echo "filenames: $filenames"
         for i in $(seq 0 $((${#files[@]} - 1))); do
             #cp "${files[$i]}" "${filenames[$i]}"
             echo "${files[$i]} -> ${filenames[$i]}"
