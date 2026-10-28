@@ -2,14 +2,15 @@ version 1.0
 
 workflow export_best_weights {
     input {
-        Array[String] output_weight_file_names
+        Array[String] output_weight_file_prefixes
         Array[File] weight_files
+        String out_tar_file_prefix
     }
 
     call tar_files {
         input:
             files = weight_files,
-            filenames = output_weight_file_names
+            file_prefixes = output_weight_file_prefixes
     }
 
     output {
@@ -21,29 +22,30 @@ workflow export_best_weights {
 task tar_files {
     input {
         Array[File] files
-        Array[String] filenames
+        Array[String] file_prefixes
+        String out_tar_file_prefix
     }
 
     command <<<
         file_array=(~{sep=' ' files})
-        filename_array=(~{sep=' ' filenames})
+        file_prefix_array=(~{sep=' ' file_prefixes})
 
         echo $file_array
-        echo $filename_array
+        echo $file_prefix_array
 
-        mkdir weight_files
+        mkdir ~{out_tar_file_prefix}
         for index in ${!file_array[*]}; do
-            echo "${file_array[$index]} -> ${filename_array[$index]}.tsv"
-            cp "${file_array[$index]}" "weight_files/${filename_array[$index]}.tsv"
+            echo "${file_array[$index]} -> ${file_prefix_array[$index]}.tsv"
+            cp "${file_array[$index]}" "~{out_tar_file_prefix}/${file_prefix_array[$index]}.tsv"
         done
 
-        tar --create --file=weight_files.tar weight_files
+        tar --create --file=~{out_tar_file_prefix}.tar ~{out_tar_file_prefix}
 
-        tar --list --file=weight_files.tar
+        tar --list --file=~{out_tar_file_prefix}.tar
     >>>
 
     output {
-        File tar_file = "weight_files.tar"
+        File tar_file = "~{out_tar_file_prefix}.tar"
     }
 
     runtime {
