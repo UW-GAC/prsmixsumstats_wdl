@@ -6,19 +6,19 @@ workflow export_best_weights {
         Array[File] weight_files
     }
 
-    call copy_files {
+    call tar_files {
         input:
             files = weight_files,
             filenames = output_weight_file_names
     }
 
-    # output {
-    #     Array[File] copied_files = copy_files.copied_files
-    # }
+    output {
+        File tar_file = tar_files.tar_file
+    }
 }
 
 
-task copy_files {
+task tar_files {
     input {
         Array[File] files
         Array[String] filenames
@@ -26,17 +26,24 @@ task copy_files {
 
     command <<<
         ls
-        echo "files: $files"
-        echo "filenames: $filenames"
-        for i in $(seq 0 $((${#files[@]} - 1))); do
-            #cp "${files[$i]}" "${filenames[$i]}"
-            echo "${files[$i]} -> ${filenames[$i]}"
+        echo "files: ~{sep=' ' files}"
+        echo "filenames: ~{sep=' ' filenames}"
+
+        file_array=(~{sep=' ' files})
+        filename_array=(~{sep=' ' filenames})
+
+        mkdir weight_files
+        for index in ${!file_array[*]}; do
+#            echo "${file_array[$index]} is in ${filename_array[$index]}"
+            cp "${file_array[$index]}" "weight_files/${filename_array[$index]}.tsv"
         done
+
+        tar --create --file=weight_files.tar weight_files
     >>>
 
-    # output {
-    #     Array[File] copied_files = filenames
-    # }
+    output {
+        File tar_file = "weight_files.tar"
+    }
 
     runtime {
         docker: "uwgac/anvildatamodels:0.8.1"
