@@ -5,13 +5,15 @@ workflow export_best_weights {
         Array[String] output_weight_file_prefixes
         Array[File] weight_files
         String out_tar_file_prefix
+        Int min_selected_scores = 1
     }
 
     call tar_files {
         input:
             files = weight_files,
             file_prefixes = output_weight_file_prefixes,
-            out_tar_file_prefix = out_tar_file_prefix
+            out_tar_file_prefix = out_tar_file_prefix,
+            min_selected_scores = min_selected_scores
     }
 
     output {
@@ -25,6 +27,7 @@ task tar_files {
         Array[File] files
         Array[String] file_prefixes
         String out_tar_file_prefix
+        Int min_selected_scores
     }
 
     command <<<
@@ -36,8 +39,13 @@ task tar_files {
 
         mkdir ~{out_tar_file_prefix}
         for index in ${!file_array[*]}; do
-            echo "${file_array[$index]} -> ${file_prefix_array[$index]}.tsv"
-            cp "${file_array[$index]}" "~{out_tar_file_prefix}/${file_prefix_array[$index]}.tsv"
+            # Only copy the file if the it has more than 1 line
+            line_count=$(gsutil cat ${file_array[$index]} | wc -l)
+            echo "Line count for ${file_array[$index]}: $line_count"
+            if [ "$line_count" -gt ~{min_selected_scores} ]; then
+                echo "${file_array[$index]} -> ${file_prefix_array[$index]}.tsv"
+                cp "${file_array[$index]}" "~{out_tar_file_prefix}/${file_prefix_array[$index]}.tsv"
+            fi
         done
 
         tar --create --file=~{out_tar_file_prefix}.tar ~{out_tar_file_prefix}
