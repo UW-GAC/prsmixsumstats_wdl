@@ -40,7 +40,7 @@ task tar_files {
         mkdir ~{out_tar_file_prefix}
         for index in ${!file_array[*]}; do
             # Only copy the file if the it has more than 1 line
-            line_count=$(wc -l ${file_array[$index]})
+            line_count=$(cat ${file_array[$index]} | wc -l)
             echo "Line count for ${file_array[$index]}: $line_count"
             if [ "$line_count" -gt ~{min_selected_scores} ]; then
                 echo "${file_array[$index]} -> ${file_prefix_array[$index]}.tsv"
