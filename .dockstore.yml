@@ -11,4 +11,6 @@ workflows:
    - name: ensemble_effect
      subclass: WDL
      primaryDescriptorPath: /ensemble_effect.wdl
-     
+   - name: export_best_weights
+     subclass: WDL
+     primaryDescriptorPath: /export_best_weights.wdl
